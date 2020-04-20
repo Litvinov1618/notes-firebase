@@ -1,19 +1,31 @@
-import app from 'firebase/app'
+import app from 'firebase/app';
+import 'firebase/auth';
+import * as CONFIG from '../constants/firebase-config';
 
 const config = {
-  apiKey: "AIzaSyB1cfK1IM4b_U24YALhVjErvfJ1pYlaqiY",
-  authDomain: "fir-test-272f5.firebaseapp.com",
-  databaseURL: "https://fir-test-272f5.firebaseio.com",
-  projectId: "fir-test-272f5",
-  storageBucket: "fir-test-272f5.appspot.com",
-  messagingSenderId: "486137637760",
-  appId: "1:486137637760:web:c2b6ae3c9f7dbf4a2aef65"
+  apiKey: CONFIG.API_KEY,
+  authDomain: CONFIG.AUTH_DOMAIN,
+  databaseURL: CONFIG.DATABASE_URL,
+  projectId: CONFIG.PROJECT_ID,
+  storageBucket: CONFIG.STORAGE_BUCKET,
+  messagingSenderId: CONFIG.MESSAGING_SENDER_ID,
+  appId: CONFIG.APP_ID,  
 };
 
 class Firebase {
   constructor() {
-    app.initializeApp(config)
-  }
-}
+    app.initializeApp(config);
 
-export default Firebase
+    this.auth = app.auth();
+  }
+
+  doCreateUserWithEmailAndPassword = (email, password) =>
+    this.auth.createUserWithEmailAndPassword(email, password);
+
+  doSignInWithEmailAndPassword = (email, password) =>
+    this.auth.signInWithEmailAndPassword(email, password);
+
+  doSignOut = () => this.auth.signOut();
+};
+
+export default Firebase;

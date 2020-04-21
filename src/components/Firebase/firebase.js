@@ -1,4 +1,5 @@
 import app from 'firebase/app';
+import 'firebase/firestore';
 import 'firebase/auth';
 import * as CONFIG from '../constants/firebase-config';
 
@@ -17,7 +18,8 @@ class Firebase {
     app.initializeApp(config);
 
     this.auth = app.auth();
-  }
+    this.fstore = app.firestore();
+  };
 
   doCreateUserWithEmailAndPassword = (email, password) =>
     this.auth.createUserWithEmailAndPassword(email, password);
@@ -26,6 +28,34 @@ class Firebase {
     this.auth.signInWithEmailAndPassword(email, password);
 
   doSignOut = () => this.auth.signOut();
+
+  /**
+   * @param {string} currentUser
+   * @param {string} text
+   */
+  addNote = (currentUser, text) => {
+    this.fstore.collection(`users/${currentUser}/notes`).add({text})
+    .then(() => {
+      console.log(currentUser + ' added a new note!');
+    })
+    .catch(error => {
+      console.error('Error writing document: ', error);
+    });
+  };
+
+  /**
+   * @returns {array} currentUserNotes
+   */
+  getNotes = (currentUser) => {
+    const currentUserNotes = [];
+    this.fstore.collection(`users/${currentUser}/notes`).get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        currentUserNotes.push(doc.data());
+      });
+    });
+    return currentUserNotes;
+  };
 };
+
 
 export default Firebase;

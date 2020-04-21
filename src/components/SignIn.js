@@ -25,8 +25,9 @@ const SignInForm = props => {
         setState({...state,  error });
       });
     event.preventDefault();
-    console.log(state)
+    console.log('You signed as ' + state.email)
   };
+  
   const onChange = event => {
     setState({...state, [event.target.name]: event.target.value});
   };

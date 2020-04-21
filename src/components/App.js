@@ -9,27 +9,31 @@ import SignInPage from './SignIn';
 import HomePage from './Home';
 import * as ROUTES from './constants/routes';
 import { withFirebase } from './Firebase/main';
+import AuthUserContext from './Session/context';
 
 const App = ({firebase}) => {
-  const [state, setState] = useState({ authUser:null });
-  
+  const [state, setState] = useState({ authUser: null });
+
   useEffect(() => {
     firebase.auth.onAuthStateChanged(authUser => {
       authUser
         ? setState({ authUser })
         : setState({ authUser: null });
     });
-  })
+  });
+
   return (
-    <Router>
-    <div>
-      <Navigation authUser={state.authUser}/>
-      <hr />
-      <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
-      <Route path={ROUTES.SIGN_IN} component={SignInPage} />
-      <Route exact path={ROUTES.HOME} component={HomePage} />
-    </div>
-  </Router>
+    <AuthUserContext.Provider value={state.authUser}>
+      <Router>
+        <div>
+          <Navigation/>
+          <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
+          <Route path={ROUTES.SIGN_IN} component={SignInPage} />
+          <Route exact path={ROUTES.HOME} component={HomePage} />
+        </div>
+      </Router>
+    </AuthUserContext.Provider>
   );
 };
+
 export default withFirebase(App);

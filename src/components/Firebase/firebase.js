@@ -1,4 +1,4 @@
-import app from 'firebase/app';
+import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
 import * as CONFIG from '../constants/firebase-config';
@@ -15,25 +15,35 @@ const config = {
 
 class Firebase {
   constructor() {
-    app.initializeApp(config);
+    firebase.initializeApp(config);
 
-    this.auth = app.auth();
-    this.fstore = app.firestore();
+    this.auth = firebase.auth();
+    this.fstore = firebase.firestore();
   };
 
+  /**
+   * @param {string} email
+   * @param {string} password
+   */
   doCreateUserWithEmailAndPassword = (email, password) =>
     this.auth.createUserWithEmailAndPassword(email, password);
 
+  /**
+   * @param {string} email
+   * @param {string} password
+   */
   doSignInWithEmailAndPassword = (email, password) =>
     this.auth.signInWithEmailAndPassword(email, password);
 
-  doSignOut = () => this.auth.signOut();
+  doSignOut = () => this.auth.signOut()
+    .then(() => console.log('You signed out!'))
+    .catch(error => console.log('Sign out error: ', error));
 
   /**
    * @param {string} currentUser
    * @param {string} text
    */
-  addNote = (currentUser, text) => {
+  addNote = (currentUser, text) =>
     this.fstore.collection(`users/${currentUser}/notes`).add({text})
     .then(() => {
       console.log(currentUser + ' added a new note!');
@@ -41,20 +51,50 @@ class Firebase {
     .catch(error => {
       console.error('Error writing document: ', error);
     });
-  };
 
   /**
+   * @param {string} currentUser
    * @returns {array} currentUserNotes
    */
-  getNotes = (currentUser) => {
+  getUserNotes = (currentUser) => {
     const currentUserNotes = [];
     this.fstore.collection(`users/${currentUser}/notes`).get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        currentUserNotes.push(doc.data());
+        const userNote = {
+          text: doc.data().text,
+          id: doc.id
+        }
+        currentUserNotes.push(userNote);
       });
     });
     return currentUserNotes;
   };
+
+  /**
+   * @param {string} currentUser
+   * @param {string} noteId
+   */
+  deleteNote = (currentUser, noteId) =>
+    this.fstore.collection(`users/${currentUser}/notes`).doc(noteId).delete()
+    .then(() => {
+      console.log(`Document with id ${noteId} successfully deleted!`);
+    }).catch(error => {
+      console.error("Error removing document: ", error);
+    });
+
+  /**
+   * @param {string} currentUser
+   * @param {string} noteId
+   * @param {string} updateText
+   */
+  updateNote = (currentUser, noteId, updateText) =>
+    this.fstore.collection(`users/${currentUser}/notes`).doc(noteId).update({text: updateText})
+    .then(() => {
+      console.log(`Document with id ${noteId} successfully updated!`);
+    })
+    .catch(error => {
+      console.error("Error updating document: ", error);
+    });
 };
 
 

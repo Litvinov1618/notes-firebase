@@ -12,20 +12,19 @@ const SignInForm = props => {
   const {
     email,
     password,
-    error
+    error,
   } = state;
 
   const onSubmit = event => {
-    props.firebase
-      .doSignInWithEmailAndPassword(email, password)
+    props.firebase.doSignInWithEmailAndPassword(email, password)
       .then(() => {
         setState({...state, ...INITIAL_STATE });
+        console.log('You signed as ' + email);
       })
       .catch(error => {
         setState({...state,  error });
       });
     event.preventDefault();
-    console.log('You signed as ' + state.email)
   };
   
   const onChange = event => {

@@ -16,10 +16,10 @@ const SignUpForm = ({firebase}) => {
   } = state;
 
   const onSubmit = event => {
-    firebase
-      .doCreateUserWithEmailAndPassword(email, password)
+    firebase.doCreateUserWithEmailAndPassword(email, password)
       .then(() => {
         setState({...state, ...INITIAL_STATE });
+        console.log(`User ${email} is created!`);
       })
       .catch(error => {
         setState({...state,  error });

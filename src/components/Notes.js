@@ -5,9 +5,15 @@ const Notes = ({currentUser, firebase}) => {
   const [text, setText] = useState('');
   const [notes, setNotes] = useState(firebase.getUserNotes(currentUser))
 
-  const handleEnter = event => {
+  const addNewNote = event => {
     if(event.key === 'Enter') {
-      firebase.addNote(currentUser, text);
+      firebase.addNote(currentUser, text)
+        .then(() => {
+          console.log(currentUser + ' added a new note!');
+        })
+        .catch(error => {
+          console.error('Error writing document: ', error);
+        });
       setNotes(firebase.getUserNotes(currentUser));
       setText('');
     };
@@ -19,15 +25,27 @@ const Notes = ({currentUser, firebase}) => {
 
   const deleteNote = (event) => {
     const noteId = event.target.parentNode.id;
-    firebase.deleteNote(currentUser, noteId);
+    firebase.deleteNote(currentUser, noteId)
+      .then(() => {
+        console.log(`Document with id ${noteId} successfully deleted!`);
+      }).catch(error => {
+        console.error("Error removing document: ", error);
+      });
     setNotes(firebase.getUserNotes(currentUser));
   };
 
   const editNote = (event) => {
     const noteId = event.target.parentNode.id;
     const updateText = window.prompt('Edit this note');
-    if(updateText)
+    if(updateText) {
       firebase.updateNote(currentUser, noteId, updateText)
+        .then(() => {
+          console.log(`Document with id ${noteId} successfully updated!`);
+        })
+        .catch(error => {
+          console.error("Error updating document: ", error);
+        });
+    }
     setNotes(firebase.getUserNotes(currentUser));
   };
 
@@ -35,7 +53,7 @@ const Notes = ({currentUser, firebase}) => {
     <>
       <h1>Hello, {currentUser}</h1>
       <h2>You can write everything you want</h2>
-      <input onKeyPress={handleEnter} onChange={handleChange} value={text}/>
+      <input onKeyPress={addNewNote} onChange={handleChange} value={text}/>
       <ol>
         {notes ? notes.map(note => 
         <li id={note.id} key={note.id}>

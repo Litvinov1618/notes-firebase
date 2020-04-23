@@ -36,8 +36,6 @@ class Firebase {
     this.auth.signInWithEmailAndPassword(email, password);
 
   doSignOut = () => this.auth.signOut()
-    .then(() => console.log('You signed out!'))
-    .catch(error => console.log('Sign out error: ', error));
 
   /**
    * @param {string} currentUser
@@ -45,12 +43,6 @@ class Firebase {
    */
   addNote = (currentUser, text) =>
     this.fstore.collection(`users/${currentUser}/notes`).add({text})
-    .then(() => {
-      console.log(currentUser + ' added a new note!');
-    })
-    .catch(error => {
-      console.error('Error writing document: ', error);
-    });
 
   /**
    * @param {string} currentUser
@@ -76,11 +68,6 @@ class Firebase {
    */
   deleteNote = (currentUser, noteId) =>
     this.fstore.collection(`users/${currentUser}/notes`).doc(noteId).delete()
-    .then(() => {
-      console.log(`Document with id ${noteId} successfully deleted!`);
-    }).catch(error => {
-      console.error("Error removing document: ", error);
-    });
 
   /**
    * @param {string} currentUser
@@ -89,12 +76,6 @@ class Firebase {
    */
   updateNote = (currentUser, noteId, updateText) =>
     this.fstore.collection(`users/${currentUser}/notes`).doc(noteId).update({text: updateText})
-    .then(() => {
-      console.log(`Document with id ${noteId} successfully updated!`);
-    })
-    .catch(error => {
-      console.error("Error updating document: ", error);
-    });
 };
 
 

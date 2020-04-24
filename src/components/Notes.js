@@ -7,8 +7,8 @@ const Notes = ({currentUser}) => {
     setText(event.target.value)
   }
   const addNewNote = (event) => {
-    console.log(event)
-    // if(event)add(text)
+    if(event.key === 'Enter') add({text});
+    setText('')
   }
 
   const {add, documents, loading} = useNotesCollection(currentUser)

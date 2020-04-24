@@ -1,6 +1,6 @@
 import useFirestoreCollection from "./useFirestoreCollection";
 
-const useNotesCollection = (currentUser) => 
+const useNotesCollection = ({currentUser}) => 
   useFirestoreCollection(`users/${currentUser}/notes`)
 
 

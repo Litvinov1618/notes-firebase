@@ -8,7 +8,7 @@ import SignUpPage from './SignUp';
 import SignInPage from './SignIn';
 import HomePage from './Home';
 import * as ROUTES from './constants/routes';
-import { withFirebase } from './Firebase/main';
+import { withAuth } from './Firebase/AuthContext';
 import AuthUserContext from './Session/context';
 
 const App = ({firebase}) => {
@@ -36,4 +36,4 @@ const App = ({firebase}) => {
   );
 };
 
-export default withFirebase(App);
+export default withAuth(App);

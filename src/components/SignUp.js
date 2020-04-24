@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { withFirebase } from './Firebase/main';
+import { withAuth } from './Firebase/AuthContext';
 
 const INITIAL_STATE = {
   email: '',
@@ -59,4 +59,4 @@ const SignUpForm = ({firebase}) => {
   );
 };
 
-export default withFirebase(SignUpForm);
+export default withAuth(SignUpForm);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { withFirebase } from './Firebase/main';
+import { withAuth } from './Firebase/AuthContext';
 
 const SignOutButton = ({firebase}) => {
   const signOut = () => {
@@ -10,4 +10,4 @@ const SignOutButton = ({firebase}) => {
   return <button type='button' onClick={signOut}>Sign out</button>
 }
 
-export default withFirebase(SignOutButton);
+export default withAuth(SignOutButton);

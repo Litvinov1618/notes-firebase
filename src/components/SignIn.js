@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { withAuth } from './Firebase/AuthContext';
+import useFirebaseUser from './Firebase/useFirebaseUser';
 
 const INITIAL_STATE = {
   email: '',
@@ -7,7 +7,7 @@ const INITIAL_STATE = {
   error: null,
 };
 
-const SignInForm = props => {
+const SignInForm = () => {
   const [state, setState] = useState({...INITIAL_STATE});
   const {
     email,
@@ -15,8 +15,10 @@ const SignInForm = props => {
     error,
   } = state;
 
+  const {doSignInWithEmailAndPassword} = useFirebaseUser();
+
   const onSubmit = event => {
-    props.firebase.doSignInWithEmailAndPassword(email, password)
+    doSignInWithEmailAndPassword(email, password)
       .then(() => {
         setState({...state, ...INITIAL_STATE });
         console.log('You signed as ' + email);
@@ -56,4 +58,4 @@ const SignInForm = props => {
   );
 };
 
-export default withAuth(SignInForm);
+export default SignInForm;

@@ -1,13 +1,12 @@
 import React from 'react';
-import { withAuth } from './Firebase/AuthContext';
+import useFirebaseUser from './Firebase/useFirebaseUser';
 
-const SignOutButton = ({firebase}) => {
-  const signOut = () => {
-    firebase.doSignOut()
-      .then(() => console.log('You signed out!'))
-      .catch(error => console.log('Sign out error: ', error));
-  }
+const SignOutButton = () => {
+  const {doSignOut} = useFirebaseUser();
+  const signOut = () => doSignOut()
+    .then(() => console.log('You signed out!'))
+    .catch(error => console.log('Sign out error: ', error))
   return <button type='button' onClick={signOut}>Sign out</button>
-}
+};
 
-export default withAuth(SignOutButton);
+export default SignOutButton;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { withAuth } from './Firebase/AuthContext';
+import useFirebaseUser from './Firebase/useFirebaseUser';
 
 const INITIAL_STATE = {
   email: '',
@@ -7,7 +7,7 @@ const INITIAL_STATE = {
   error: null,
 };
 
-const SignUpForm = ({firebase}) => {
+const SignUpForm = () => {
   const [state, setState] = useState({...INITIAL_STATE});
   const {
     email,
@@ -15,8 +15,10 @@ const SignUpForm = ({firebase}) => {
     error
   } = state;
 
+  const {doCreateUserWithEmailAndPassword} = useFirebaseUser();
+
   const onSubmit = event => {
-    firebase.doCreateUserWithEmailAndPassword(email, password)
+    doCreateUserWithEmailAndPassword(email, password)
       .then(() => {
         setState({...state, ...INITIAL_STATE });
         console.log(`User ${email} is created!`);
@@ -59,4 +61,4 @@ const SignUpForm = ({firebase}) => {
   );
 };
 
-export default withAuth(SignUpForm);
+export default SignUpForm;

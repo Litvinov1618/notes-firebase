@@ -1,17 +1,17 @@
 import React from 'react';
-import AuthUserContext from './Session/context';
 import UserNotes from './UserNotes';
+import useFirebaseUser from './Firebase/useFirebaseUser';
 
 const Home = () => {
+  const {authUser} = useFirebaseUser();
+
   return (
-    <AuthUserContext.Consumer>
-      {authUser => (
-        authUser ? 
-          <UserNotes currentUser={authUser.email} />
-          : <h1>You can sign by press "Sign in" or "Sign up" button</h1>
-      )}
-    </AuthUserContext.Consumer>
-  );
-};
+    <>
+      {authUser ? 
+        <UserNotes currentUser={authUser.email} />
+        : <h1>You can sign by press "Sign in" or "Sign up" button</h1>}
+    </>
+  )
+}
 
 export default Home;

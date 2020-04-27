@@ -2,13 +2,16 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import * as ROUTES from './constants/routes';
 import SignOutButton from './SignOutButton';
-import AuthUserContext from './Session/context';
+import useFirebaseUser from './Firebase/useFirebaseUser';
 
-const Navigation = () => (
-  <AuthUserContext.Consumer>
-    {authUser => authUser ? <AuthNav /> : <NonAuthNav />}
-  </AuthUserContext.Consumer>
-);
+const Navigation = () => {
+  const {authUser} = useFirebaseUser();
+  return (
+    <>
+      {authUser ? <AuthNav /> : <NonAuthNav />}
+    </>
+  );
+}
 
 const NonAuthNav = () => (
   <>

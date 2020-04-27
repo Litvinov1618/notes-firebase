@@ -36,7 +36,7 @@ const useFirestoreCollection = (collectionName, immediate = true) => {
 
   if (immediate && !loaded) load();
 
-  return { documents, collection, loading, add, query: setQuery };
+  return { documents, collection, loading, load, add, query: setQuery };
 };
 
 export default useFirestoreCollection;

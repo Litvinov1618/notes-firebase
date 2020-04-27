@@ -13,7 +13,21 @@ const useFirestoreCollection = (collectionName, immediate = true) => {
   const [loaded, setLoadedState] = useState(false);
   const [loading, setLoadingState] = useState(false);
 
-  const add = documentData => collection.add(documentData);
+  const add = docData => {
+    collection.add(docData)
+      .then(load)
+      .catch(error => console.log(error));
+  };
+  const deleteDoc = docId => {
+    collection.doc(docId).delete()
+      .then(load)
+      .catch(error => console.log(error));
+  };
+  const editDoc = (docId, docData) => {
+    collection.doc(docId).update(docData)
+      .then(load)
+      .catch(error => console.log(error));
+  };
 
   const load = () => {
     if (loading) return;
@@ -36,7 +50,7 @@ const useFirestoreCollection = (collectionName, immediate = true) => {
 
   if (immediate && !loaded) load();
 
-  return { documents, collection, loading, load, add, query: setQuery };
+  return { documents, collection, loading, load, add, deleteDoc, editDoc, query: setQuery };
 };
 
 export default useFirestoreCollection;

@@ -3,13 +3,9 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './components/App';
 import * as serviceWorker from './serviceWorker';
-import AuthContext from './components/Firebase/AuthContext';
-import Auth from './components/Firebase/Auth';
 
 ReactDOM.render(
-  <AuthContext.Provider value={new Auth()}>
-    <App />
-  </AuthContext.Provider>,
+  <App />,
   document.getElementById('root')
 );
 

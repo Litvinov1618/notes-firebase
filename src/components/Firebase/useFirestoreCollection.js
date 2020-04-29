@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import firebase from './firebase';
 
 /**
@@ -13,44 +13,46 @@ const useFirestoreCollection = (collectionName, immediate = true) => {
   const [loaded, setLoadedState] = useState(false);
   const [loading, setLoadingState] = useState(false);
 
-  const add = docData => {
+  const add = docData =>
     collection.add(docData)
-      .then(load)
-      .catch(error => console.log(error));
-  };
-  const deleteDoc = docId => {
+
+  const deleteDoc = docId => 
     collection.doc(docId).delete()
-      .then(load)
-      .catch(error => console.log(error));
-  };
-  const editDoc = (docId, docData) => {
+  
+  const editDoc = (docId, docData) => 
     collection.doc(docId).update(docData)
-      .then(load)
-      .catch(error => console.log(error));
-  };
 
-  const load = () => {
-    if (loading) return;
+  useEffect(() => query.onSnapshot(
+    snapshot => {
+      setDocuments(snapshot.docs);
+    },
+    error => {
+      console.error('Cannot load Firestore collection', error);
+    }), [query, loaded]
+  )
 
-    setLoadingState(true);
+  // const load = () => {
+  //   if (loading) return;
 
-    query.get().then(
-      snapshot => {
-        if (!loaded) setLoadedState(true);
-        setLoadingState(false);
-        setDocuments(snapshot.docs);
-      },
-      error => {
-        if (!loaded) setLoadedState(true);
-        setLoadingState(false);
-        console.error('Cannot load Firestore collection', error);
-      }
-    );
-  };
+  //   setLoadingState(true);
 
-  if (immediate && !loaded) load();
+  //   query.get().then(
+  //     snapshot => {
+  //       if (!loaded) setLoadedState(true);
+  //       setLoadingState(false);
+  //       setDocuments(snapshot.docs);
+  //     },
+  //     error => {
+  //       if (!loaded) setLoadedState(true);
+  //       setLoadingState(false);
+  //       console.error('Cannot load Firestore collection', error);
+  //     }
+  //   );
+  // };
 
-  return { documents, collection, loading, load, add, deleteDoc, editDoc, query: setQuery };
+  // if (immediate && !loaded) load();
+
+  return { documents, collection, loading, add, deleteDoc, editDoc, query: setQuery };
 };
 
 export default useFirestoreCollection;

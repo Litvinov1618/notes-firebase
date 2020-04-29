@@ -5,14 +5,11 @@ const useFirebaseUser = () => {
   const [auth] = useState(firebase.auth());
   const [authUser, setAuthUser] = useState(null);
 
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(authStatus => {
+  useEffect(() => auth.onAuthStateChanged(authStatus => {
       authStatus
         ? setAuthUser(authStatus)
         : setAuthUser(null);
-    });
-    return () => unsubscribe()
-  });
+    }));
 
   const doCreateUserWithEmailAndPassword = (email, password) =>
     auth.createUserWithEmailAndPassword(email, password);

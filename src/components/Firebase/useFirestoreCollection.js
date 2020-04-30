@@ -10,7 +10,7 @@ const useFirestoreCollection = (collectionName, immediate = true) => {
   const [documents, setDocuments] = useState([]);
   const [collection] = useState(() => firebase.firestore().collection(collectionName));
   const [query, setQuery] = useState(collection);
-  const [loaded, setLoadedState] = useState(false);
+  // const [loaded, setLoadedState] = useState(false);
   const [loading, setLoadingState] = useState(false);
 
   const add = docData =>
@@ -22,14 +22,19 @@ const useFirestoreCollection = (collectionName, immediate = true) => {
   const editDoc = (docId, docData) => 
     collection.doc(docId).update(docData)
 
-  useEffect(() => query.onSnapshot(
-    snapshot => {
-      setDocuments(snapshot.docs);
-    },
-    error => {
-      console.error('Cannot load Firestore collection', error);
-    }), [query, loaded]
-  )
+  useEffect(() => {
+    setLoadingState(true);
+    return query.onSnapshot(
+      snapshot => {
+        setLoadingState(false);
+        setDocuments(snapshot.docs);
+      },
+      error => {
+        setLoadingState(false);
+        console.error('Cannot load Firestore collection', error);
+      }
+    );
+  }, [query])
 
   // const load = () => {
   //   if (loading) return;

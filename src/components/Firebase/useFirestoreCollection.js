@@ -10,7 +10,7 @@ const useFirestoreCollection = (collectionName, immediate = true) => {
   const [documents, setDocuments] = useState([]);
   const [collection] = useState(() => firebase.firestore().collection(collectionName));
   const [query, setQuery] = useState(collection);
-  // const [loaded, setLoadedState] = useState(false);
+  const [loaded, setLoadedState] = useState(false);
   const [loading, setLoadingState] = useState(false);
 
   const add = docData =>
@@ -22,40 +22,40 @@ const useFirestoreCollection = (collectionName, immediate = true) => {
   const editDoc = (docId, docData) => 
     collection.doc(docId).update(docData)
 
-  useEffect(() => {
-    setLoadingState(true);
-    return query.onSnapshot(
-      snapshot => {
-        setLoadingState(false);
-        setDocuments(snapshot.docs);
-      },
-      error => {
-        setLoadingState(false);
-        console.error('Cannot load Firestore collection', error);
-      }
-    );
-  }, [query])
-
-  // const load = () => {
-  //   if (loading) return;
-
+  // useEffect(() => {
   //   setLoadingState(true);
-
-  //   query.get().then(
+  //   return query.onSnapshot(
   //     snapshot => {
-  //       if (!loaded) setLoadedState(true);
   //       setLoadingState(false);
   //       setDocuments(snapshot.docs);
   //     },
   //     error => {
-  //       if (!loaded) setLoadedState(true);
   //       setLoadingState(false);
   //       console.error('Cannot load Firestore collection', error);
   //     }
   //   );
-  // };
+  // }, [query])
 
-  // if (immediate && !loaded) load();
+  const load = () => {
+    if (loading) return;
+
+    setLoadingState(true);
+
+    query.onSnapshot(
+      snapshot => {
+        if (!loaded) setLoadedState(true);
+        setLoadingState(false);
+        setDocuments(snapshot.docs);
+      },
+      error => {
+        if (!loaded) setLoadedState(true);
+        setLoadingState(false);
+        console.error('Cannot load Firestore collection', error);
+      }
+    );
+  };
+
+  if (immediate && !loaded) load();
 
   return { documents, collection, loading, add, deleteDoc, editDoc, query: setQuery };
 };

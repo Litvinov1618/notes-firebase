@@ -3,7 +3,7 @@ import useNotesCollection from './Firebase/useNotesCollection';
 import Note from './Note';
 
 const UserNotes = ({currentUser}) => {
-  const { documents, loading, deleteDoc, editDoc, add }
+  const { documents, ready, remove, edit, add }
     = useNotesCollection(currentUser);
   const [text, setText] = useState('');
   const handleChange = event => setText(event.target.value);
@@ -11,7 +11,7 @@ const UserNotes = ({currentUser}) => {
     if(event.key === 'Enter') {
       const date = new Date();
       add({text, date: date.valueOf()});
-      setText('')
+      setText('');
     };
   };
 
@@ -19,15 +19,14 @@ const UserNotes = ({currentUser}) => {
     <div>
       <input value={text} onChange={handleChange} onKeyPress={sendNote}/>
       <ol>
-        {loading && <span>Loading...</span>}
+        {!ready && <span>Loading...</span>}
         {documents
-          .sort((a,b) => b.data().date - a.data().date)
           .map(note => <Note 
             key={note.id}
             id={note.id} 
             note={note.data()}
-            deleteDoc={deleteDoc}
-            editDoc={editDoc}
+            remove={remove}
+            edit={edit}
         />)}
       </ol>
     </div>

@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Note = ({note, id, deleteDoc, editDoc}) => {
-  const deleteNote = () => deleteDoc(id);
+const Note = ({note, id, remove, edit}) => {
+  const deleteNote = () => remove(id);
   const editNote = () => {
     const date = new Date();
     const editText = prompt();
-    editDoc(id, {text: editText, date: date.valueOf()});
+    edit(id, {text: editText, date: date.valueOf()});
   }
 
   return (

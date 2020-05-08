@@ -11,12 +11,10 @@ import * as ROUTES from './constants/routes';
 
 const App = () => 
   <Router>
-    <div>
-      <Navigation/>
-      <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
-      <Route path={ROUTES.SIGN_IN} component={SignInPage} />
-      <Route exact path={ROUTES.HOME} component={HomePage} />
-    </div>
+    <Navigation/>
+    <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
+    <Route path={ROUTES.SIGN_IN} component={SignInPage} />
+    <Route exact path={ROUTES.HOME} component={HomePage} />
   </Router>
 
 export default App;

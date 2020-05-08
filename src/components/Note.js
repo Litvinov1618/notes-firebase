@@ -1,4 +1,9 @@
 import React from 'react';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import IconButton from '@material-ui/core/IconButton';
+import CreateIcon from '@material-ui/icons/Create';
+import DeleteIcon from '@material-ui/icons/Delete';
+import ListItemText from '@material-ui/core/ListItemText';
 
 const Note = ({note, id, remove, edit}) => {
   const deleteNote = () => remove(id);
@@ -9,11 +14,13 @@ const Note = ({note, id, remove, edit}) => {
   }
 
   return (
-    <div>
-      <p>{note.text}</p>
-      <span role='img' aria-label='edit' onClick={editNote}>✏️</span>
-      <span role='img' aria-label='delete' onClick={deleteNote}>❎</span>
-    </div>
+    <>
+      <ListItemText>{note.text}</ListItemText>
+      <ButtonGroup>
+        <IconButton onClick={editNote}><CreateIcon/></IconButton>
+        <IconButton onClick={deleteNote}><DeleteIcon /></IconButton>
+      </ButtonGroup>
+    </>
   )
 }
 

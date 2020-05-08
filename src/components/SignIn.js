@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import useFirebaseUser from './Firebase/useFirebaseUser';
+import TextField from '@material-ui/core/TextField';
+import IconButton from '@material-ui/core/IconButton';
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import useStyles from './styles/useStyles';
 
 const INITIAL_STATE = {
   email: '',
@@ -14,6 +18,8 @@ const SignInForm = () => {
     password,
     error,
   } = state;
+
+  const {flexColumn, textCenter} = useStyles();
 
   const {doSignInWithEmailAndPassword} = useFirebaseUser();
 
@@ -33,25 +39,29 @@ const SignInForm = () => {
     setState({...state, [event.target.name]: event.target.value});
   };
 
+  const isInvalid =
+    password === '' ||
+    email === '';
+
   return (
     <>
-      <h1>Sign In</h1>
-      <form onSubmit={onSubmit}>
-        <input
-          name="email"
+      <h1 className={textCenter}>Sign In</h1>
+      <form onSubmit={onSubmit} className={flexColumn}>
+        <TextField
+          label='Email'
+          name='email'
           value={email}
           onChange={onChange}
-          type="text"
-          placeholder="Email Address"
+          placeholder='Email Address'
         />
-        <input
-          name="password"
+        <TextField
+          label='Password'
+          name='password'
           value={password}
           onChange={onChange}
-          type="password"
-          placeholder="Password"
+          placeholder='Password'
         />
-        <button type="submit">Sign In</button>
+        <IconButton type="submit" disabled={isInvalid}><ArrowUpwardIcon /></IconButton>
         {error && <p>{error.message}</p>}
       </form>
     </>

@@ -15,16 +15,7 @@ h1 {
   font-size: 28px;
 }
 
-h2 {
-  font-size: 25px;
-  color: indigo;
-}
-
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-}
-
-input, button {
-  padding: 5px;
 }

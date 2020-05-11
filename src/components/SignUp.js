@@ -4,6 +4,8 @@ import useStyles from './styles/useStyles';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import {TransitionGroup, CSSTransition} from 'react-transition-group';
+import './styles/animation.css';
 
 const INITIAL_STATE = {
   email: '',
@@ -59,7 +61,13 @@ const SignUpForm = () => {
           placeholder="Password"
         />
         <IconButton type="submit" disabled={isInvalid}><ArrowUpwardIcon /></IconButton>
-        {error && <p>{error.message}</p>}
+        <TransitionGroup>
+          {error &&
+            <CSSTransition timeout={300} classNames='transition'>
+              <p>{error.message}</p>
+            </CSSTransition>
+          }
+        </TransitionGroup>
       </form>
     </>
   );

@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import useNotesCollection from './Firebase/useNotesCollection';
 import Note from './Note';
-import ListItem from '@material-ui/core/ListItem';
 import TextField from '@material-ui/core/TextField';
 import useStyles from './styles/useStyles';
-import List from '@material-ui/core/List';
+import {TransitionGroup, CSSTransition} from 'react-transition-group';
+import './styles/animation.css';
 
 const UserNotes = ({currentUser}) => {
   const { documents, ready, remove, edit, add }
@@ -28,21 +28,15 @@ const UserNotes = ({currentUser}) => {
         onChange={handleChange}
         onKeyPress={sendNote}
       />
-      <List>
         {!ready && <span>Loading...</span>}
-        {documents
-          .map(note => <ListItem 
-            alignItems='flex-start'
-            component={Note}
-            key={note.id}
-            id={note.id} 
-            note={note.data()}
-            remove={remove}
-            edit={edit}
-        />)}
-      </List>
-    </div>
-  );
-};
+        <TransitionGroup>
+          {documents.map(note => 
+            <CSSTransition timeout={300} key={note.id} classNames='transition'>
+              <Note key={note.id} id={note.id} note={note.data()} remove={remove} edit={edit}/>
+            </CSSTransition>
+          )}
+        </TransitionGroup>
+    </div>)
+}
 
 export default UserNotes; 

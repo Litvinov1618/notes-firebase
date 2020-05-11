@@ -1,0 +1,39 @@
+/* .animation-enter {
+  opacity: 0.01;
+}
+
+.animation-enter.animation-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+
+.animation-leave {
+  opacity: 1;
+}
+
+.animation-leave.animation-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in;
+} */
+
+.transition-enter {
+  opacity: 0.01;
+  transform: translate(0, -10px);
+}
+
+.transition-enter-active {
+  opacity: 1;
+  transform: translate(0, 0);
+  transition: all 300ms ease-in;
+}
+
+.transition-exit {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+.transition-exit-active {
+  opacity: 0.01;
+  transform: translate(0, 10px);
+  transition: all 300ms ease-in;
+}

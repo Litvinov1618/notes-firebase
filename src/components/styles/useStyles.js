@@ -7,7 +7,7 @@ const useStyles = makeStyles({
   flexColumn: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
   }
 })
 

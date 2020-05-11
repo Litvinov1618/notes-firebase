@@ -13,6 +13,7 @@ const UserNotes = ({currentUser}) => {
   const {flexColumn} = useStyles();
   const handleChange = event => setText(event.target.value);
   const sendNote = event => {
+    if(!text) return
     if(event.key === 'Enter') {
       const date = new Date();
       add({text, date: date.valueOf()});
@@ -36,7 +37,8 @@ const UserNotes = ({currentUser}) => {
             </CSSTransition>
           )}
         </TransitionGroup>
-    </div>)
+    </div>
+  )
 }
 
 export default UserNotes; 

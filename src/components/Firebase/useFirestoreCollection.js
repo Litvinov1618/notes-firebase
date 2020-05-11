@@ -14,7 +14,6 @@ const useFirestoreCollection = (collectionName, immediate = true) => {
   const actions = useFirestoreCollectionActions(collectionName);
 
   useEffect(() => {
-    debugger
     if(immediate) 
       return query.orderBy('date').onSnapshot(
         snapshot => {

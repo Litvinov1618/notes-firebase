@@ -1,18 +1,19 @@
 import React from 'react';
-import {
-  BrowserRouter as Router,
-  Route,
-} from 'react-router-dom';
-import Navigation from './Navigation';
-import SignInPage from './SignIn';
-import HomePage from './Home';
-import * as ROUTES from './constants/routes';
+import UserNotes from './UserNotes';
+import useFirebaseUser from './Firebase/useFirebaseUser';
+import useStyles from './styles/useStyles';
+import AuthComponent from './AuthComponent';
 
-const App = () => 
-  <Router>
-    <Navigation/>
-    <Route path={ROUTES.SIGN_IN} component={SignInPage} />
-    <Route exact path={ROUTES.HOME} component={HomePage} />
-  </Router>
+const App = () => {
+  const {authUser} = useFirebaseUser();
+  const {flexColumn} = useStyles();
+  return (
+    <div className={flexColumn}>
+      {authUser ? 
+        <UserNotes currentUser={authUser.email} />
+        : <AuthComponent />}
+    </div>
+  )
+}
 
 export default App;

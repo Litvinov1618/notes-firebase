@@ -5,6 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import useStyles from './styles/useStyles';
 import {TransitionGroup, CSSTransition} from 'react-transition-group';
 import './styles/animation.css';
+import SignOutButton from './SignOutButton';
 
 const UserNotes = ({currentUser}) => {
   const { documents, ready, remove, edit, add }
@@ -23,6 +24,7 @@ const UserNotes = ({currentUser}) => {
 
   return (
     <div className={flexColumn}>
+      <SignOutButton />
       <TextField 
         label='Write smth'
         value={text}

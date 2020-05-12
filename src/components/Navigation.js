@@ -8,7 +8,7 @@ const Navigation = () => {
   const {textCenter} = useStyles()
   return (
     <div className={textCenter}>
-      {authUser ? <SignOutButton /> : <span>Sign in with email and password</span>}
+      {authUser && <SignOutButton />}
     </div >
   );
 }
